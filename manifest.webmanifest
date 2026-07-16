@@ -1,0 +1,17 @@
+{
+  "name": "챔 근무표",
+  "short_name": "챔 근무표",
+  "description": "야간·오프 자동 배정 근무표 메이커",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F9FAFB",
+  "theme_color": "#3182F6",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
