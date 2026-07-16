@@ -26,10 +26,12 @@
 ## 배포
 
 push하면 GitHub Actions가 테스트 → 빌드 → `gh-pages` 브랜치로 자동 배포합니다.
-사이트 주소: **https://6soo.github.io/chaem/**
 
-`gh-pages` 브랜치가 처음 만들어질 때 GitHub이 Pages를 자동 활성화해요.
-혹시 사이트가 안 뜨면 최초 1회만 **Settings → Pages → Source: Deploy from a branch → `gh-pages`**를 선택해주세요.
+사이트 주소: **https://chaem.foresttour.kr** (커스텀 도메인, 원본: https://6soo.github.io/chaem/)
+
+커스텀 도메인이 동작하려면 DNS에 CNAME 레코드가 필요해요:
+`chaem.foresttour.kr → 6soo.github.io`
+연결된 뒤 Settings → Pages에서 **Enforce HTTPS**를 켜는 것을 권장합니다.
 
 ## 개발
 

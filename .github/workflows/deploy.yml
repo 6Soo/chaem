@@ -35,3 +35,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          # 커스텀 도메인 유지 — 없으면 배포 때마다 CNAME 파일이 지워져 도메인 설정이 풀린다
+          cname: chaem.foresttour.kr
