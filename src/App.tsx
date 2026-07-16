@@ -3,12 +3,11 @@ import { CalendarView } from './components/CalendarView'
 import { ConfirmDialog } from './components/ConfirmDialog'
 import { DaySheet } from './components/DaySheet'
 import { ExportCard } from './components/ExportCard'
-import { ChevronLeft, ChevronRight, CopyIcon, GearIcon, ImageIcon, SparkIcon } from './components/Icons'
+import { ChevronLeft, ChevronRight, GearIcon, KakaoIcon, SparkIcon } from './components/Icons'
 import { SettingsSheet } from './components/SettingsSheet'
 import { StatsView } from './components/StatsView'
 import { fmt, mondayOf, mondaysOfMonthGrid, parse } from './lib/date'
-import { monthText } from './lib/exportText'
-import { copyText, saveExportImage } from './lib/exportImage'
+import { shareOrDownloadImage } from './lib/exportImage'
 import { KR_HOLIDAYS, holidayName, makeHolidayFn } from './lib/holidays'
 import { collectHistory, emptyWeek, generateMonth, generateWeek, validateWeek } from './lib/scheduler'
 import { clearStore, defaultStore, loadStore, saveStore } from './lib/storage'
@@ -136,30 +135,19 @@ export default function App() {
     showToast('설정을 저장했어요')
   }
 
-  async function handleCopy() {
-    if (!monthHasPlan) {
-      showToast('먼저 근무표를 생성해주세요')
-      return
-    }
-    try {
-      await copyText(monthText(ym.y, ym.m, mondays, store.weeks, store.settings, isHoliday))
-      showToast('근무표 텍스트를 복사했어요')
-    } catch {
-      showToast('복사에 실패했어요')
-    }
-  }
-
-  async function handleImage() {
+  async function handleShare() {
     if (!monthHasPlan) {
       showToast('먼저 근무표를 생성해주세요')
       return
     }
     setBusy(true)
     try {
-      await saveExportImage(`근무표_${ym.y}-${String(ym.m + 1).padStart(2, '0')}.png`)
-      showToast('이미지를 저장했어요')
-    } catch {
-      showToast('이미지 저장에 실패했어요')
+      const filename = `근무표_${ym.y}-${String(ym.m + 1).padStart(2, '0')}.png`
+      const result = await shareOrDownloadImage(filename, `${ym.y}년 ${ym.m + 1}월 근무표`)
+      showToast(result === 'shared' ? '공유 시트를 열었어요' : '공유가 지원되지 않아 이미지를 저장했어요')
+    } catch (e) {
+      if (e instanceof Error && e.name === 'AbortError') return
+      showToast('공유에 실패했어요')
     } finally {
       setBusy(false)
     }
@@ -233,11 +221,8 @@ export default function App() {
           <button className="btn btn-primary" onClick={handleGenerate}>
             <SparkIcon /> {monthHasPlan ? '이번 달 다시 생성' : '이번 달 자동 생성'}
           </button>
-          <button className="btn btn-square" onClick={handleCopy} aria-label="텍스트 복사">
-            <CopyIcon />
-          </button>
-          <button className="btn btn-square" onClick={handleImage} disabled={busy} aria-label="이미지 저장">
-            <ImageIcon />
+          <button className="btn btn-square btn-kakao" onClick={handleShare} disabled={busy} aria-label="카카오톡 공유">
+            <KakaoIcon />
           </button>
         </div>
       </div>

@@ -37,31 +37,12 @@ export function GearIcon({ size = 22 }: IconProps) {
   )
 }
 
-export function CopyIcon({ size = 22 }: IconProps) {
+export function KakaoIcon({ size = 22 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <rect x="9" y="9" width="11" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
       <path
-        d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
-export function ImageIcon({ size = 22 }: IconProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="9" cy="10" r="1.7" fill="currentColor" />
-      <path
-        d="M4 18l5-5 3.5 3.5L16 13l4 5"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M12 4.5c-5.06 0-9.17 3.24-9.17 7.23 0 2.58 1.72 4.85 4.3 6.13-.19.7-.68 2.47-.78 2.86-.12.47.17.46.36.34.15-.1 2.39-1.62 3.36-2.28.6.09 1.22.15 1.93.15 5.06 0 9.17-3.24 9.17-7.2S17.06 4.5 12 4.5z"
+        fill="currentColor"
       />
     </svg>
   )

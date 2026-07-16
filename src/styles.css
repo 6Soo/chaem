@@ -456,6 +456,15 @@ select {
   box-shadow: var(--shadow-card);
 }
 
+.btn-kakao {
+  background: #fee500;
+  color: #3c1e1e;
+}
+
+.btn-kakao:active {
+  background: #f6dc00;
+}
+
 .btn-secondary {
   background: var(--gray-100);
   color: var(--gray-800);

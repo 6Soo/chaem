@@ -1,33 +1,26 @@
-import { toPng } from 'html-to-image'
+import { toBlob } from 'html-to-image'
 
-/** #export-root 노드를 PNG로 저장 */
-export async function saveExportImage(filename: string): Promise<void> {
+type ShareResult = 'shared' | 'downloaded'
+
+/** #export-root 노드를 캡처해 기기 공유 시트로 넘기고(카카오톡 선택 가능), 지원 안 되면 다운로드로 대체 */
+export async function shareOrDownloadImage(filename: string, shareText: string): Promise<ShareResult> {
   const node = document.getElementById('export-root')
   if (!node) throw new Error('export node not found')
   await document.fonts.ready
-  const dataUrl = await toPng(node, {
-    pixelRatio: 2,
-    backgroundColor: '#F2F4F6',
-    cacheBust: true,
-  })
+  const blob = await toBlob(node, { pixelRatio: 2, backgroundColor: '#F2F4F6', cacheBust: true })
+  if (!blob) throw new Error('이미지 생성 실패')
+
+  const file = new File([blob], filename, { type: 'image/png' })
+  if (navigator.canShare?.({ files: [file] })) {
+    await navigator.share({ files: [file], title: shareText, text: shareText })
+    return 'shared'
+  }
+
+  const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
-  a.href = dataUrl
+  a.href = url
   a.download = filename
   a.click()
-}
-
-/** 클립보드 복사 (구형 브라우저 폴백 포함) */
-export async function copyText(text: string): Promise<void> {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text)
-    return
-  }
-  const ta = document.createElement('textarea')
-  ta.value = text
-  ta.style.position = 'fixed'
-  ta.style.opacity = '0'
-  document.body.appendChild(ta)
-  ta.select()
-  document.execCommand('copy')
-  ta.remove()
+  URL.revokeObjectURL(url)
+  return 'downloaded'
 }
