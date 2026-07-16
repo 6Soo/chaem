@@ -25,10 +25,11 @@
 
 ## 배포
 
-`main` 또는 지정 브랜치에 push하면 GitHub Actions가 테스트 → 빌드 → **GitHub Pages**로 자동 배포합니다.
+push하면 GitHub Actions가 테스트 → 빌드 → `gh-pages` 브랜치로 자동 배포합니다.
+사이트 주소: **https://6soo.github.io/chaem/**
 
-최초 1회만: 저장소 **Settings → Pages → Source**를 **GitHub Actions**로 설정해주세요.
-(워크플로가 자동 활성화를 시도하지만 권한에 따라 수동 설정이 필요할 수 있어요.)
+`gh-pages` 브랜치가 처음 만들어질 때 GitHub이 Pages를 자동 활성화해요.
+혹시 사이트가 안 뜨면 최초 1회만 **Settings → Pages → Source: Deploy from a branch → `gh-pages`**를 선택해주세요.
 
 ## 개발
 

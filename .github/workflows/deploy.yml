@@ -6,16 +6,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,21 +27,11 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
-      # 최초 1회 Pages 자동 활성화 시도 (권한이 없으면 Settings > Pages에서 Source를 GitHub Actions로 설정)
-      - uses: actions/configure-pages@v5
+      # dist를 gh-pages 브랜치로 배포 — gh-pages 브랜치가 생기면
+      # GitHub이 Pages를 자동 활성화한다 (안 되면 Settings > Pages에서
+      # Source: Deploy from a branch / gh-pages 선택, 최초 1회)
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          enablement: true
-        continue-on-error: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
